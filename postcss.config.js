@@ -1,6 +1,9 @@
 export default {
   plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
+    '@unocss/postcss': {
+      content: ['**/*.{html,js,ts,jsx,tsx}'],
+    },
+    'tailwindcss': {},
+    'autoprefixer': {},
   },
 }

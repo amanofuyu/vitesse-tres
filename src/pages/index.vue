@@ -1,45 +1,44 @@
 <script setup lang="ts" generic="T extends any, O extends any">
-import { OrbitControls } from '@tresjs/cientos';
-import { TresCanvas, type TresInstance, useRenderLoop } from '@tresjs/core';
-import { BasicShadowMap, NoToneMapping, SRGBColorSpace } from 'three';
-import { Pane } from 'tweakpane';
-import fragmentShader from '@/glsl/example/el1.frag';
-import vertexShader from '@/glsl/example/el1.vert';
-import { Vector2 } from 'three';
-
-const uniforms = {
-	uTime: { value: 0 },
-	uAmplitude: { value: new Vector2(0.1, 0.1) },
-	uFrequency: { value: new Vector2(20, 5) },
-};
-
-const blobRef = shallowRef<TresInstance | null>(null);
-
-const { onLoop } = useRenderLoop();
-
-onLoop(({ elapsed }) => {
-	if (blobRef.value) {
-		blobRef.value.material.uniforms.uTime.value = elapsed;
-	}
-});
-
-const pane = new Pane();
-
-const gl = reactive({
-	clearColor: '#F78B3D',
-	shadows: true,
-	alpha: false,
-	shadowMapType: BasicShadowMap,
-	outputColorSpace: SRGBColorSpace,
-	toneMapping: NoToneMapping,
-	windowSize: true,
-});
-
-pane.addBinding(gl, 'clearColor');
+import fragmentShader from '@/glsl/example/el1.frag'
+import vertexShader from '@/glsl/example/el1.vert'
+import { OrbitControls } from '@tresjs/cientos'
+import { TresCanvas, type TresInstance, useRenderLoop } from '@tresjs/core'
+import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector2 } from 'three'
+import { Pane } from 'tweakpane'
 
 defineOptions({
-	name: 'IndexPage',
-});
+  name: 'IndexPage',
+})
+
+const uniforms = {
+  uTime: { value: 0 },
+  uAmplitude: { value: new Vector2(0.1, 0.1) },
+  uFrequency: { value: new Vector2(20, 5) },
+}
+
+const blobRef = shallowRef<TresInstance | null>(null)
+
+const { onLoop } = useRenderLoop()
+
+onLoop(({ elapsed }) => {
+  if (blobRef.value) {
+    blobRef.value.material.uniforms.uTime.value = elapsed
+  }
+})
+
+const pane = new Pane()
+
+const gl = reactive({
+  clearColor: '#F78B3D',
+  shadows: true,
+  alpha: false,
+  shadowMapType: BasicShadowMap,
+  outputColorSpace: SRGBColorSpace,
+  toneMapping: NoToneMapping,
+  windowSize: true,
+})
+
+pane.addBinding(gl, 'clearColor')
 </script>
 
 <template>
@@ -54,7 +53,7 @@ defineOptions({
       <UgglyBunny />
     </Suspense>
 
-    <TresMesh  ref="blobRef" :position="[0, 0, 0]">
+    <TresMesh ref="blobRef" :position="[0, 0, 0]">
       <TresSphereGeometry :args="[2, 32, 32]" />
       <TresShaderMaterial :vertex-shader="vertexShader" :fragment-shader="fragmentShader" :uniforms="uniforms" />
     </TresMesh>
